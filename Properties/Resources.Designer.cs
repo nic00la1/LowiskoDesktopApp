@@ -61,7 +61,7 @@ namespace LowiskoDesktopApp.Properties {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu string.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu cwiczenia_1.
         /// </summary>
         internal static string database {
             get {
@@ -70,7 +70,7 @@ namespace LowiskoDesktopApp.Properties {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu string.
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu .
         /// </summary>
         internal static string pwd {
             get {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LowiskoDesktopApp.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace LowiskoDesktopApp
         // Wyswietlenie menu
         public void ShowMenu()
         {
+            Utilities utilities = new Utilities();
             Console.WriteLine("1. Wyswietl wszystkie ryby + info");
             Console.WriteLine("2. Wyswietl wszystkie lowiska + ryby jakie tam wystepuja");
             Console.WriteLine("3. Dodaj nowego rybaka");
@@ -22,6 +24,7 @@ namespace LowiskoDesktopApp
             {
                 case "1":
                     Console.WriteLine("Wyswietl wszystkie ryby + info");
+                    utilities.WyswietlRyby();
                     break;
                 case "2":
                     Console.WriteLine("Wyswietl wszystkie lowiska + ryby jakie tam wystepuja");
