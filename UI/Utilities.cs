@@ -1,13 +1,8 @@
 ﻿using LowiskoDesktopApp.DB_Managament;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LowiskoDesktopApp.UI
 {
-    public  class Utilities
+    public class Utilities
     {
         public void WyswietlRyby()
         {
@@ -17,6 +12,7 @@ namespace LowiskoDesktopApp.UI
             DatabaseManagement db = new DatabaseManagement();
 
             db.WyswietlRyby();
+            Console.ReadKey(); // Dopoki nie nacisniesz klawisza program nie wyjdzie z metody
         }
     }
 }
