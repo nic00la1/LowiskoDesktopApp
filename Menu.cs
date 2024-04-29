@@ -85,7 +85,7 @@ namespace LowiskoDesktopApp
                     utilities.WyswietlRyby();
                     break;
                 case 1:
-                    WIP_Option();
+                    utilities.WyswietlLowiska();
                     break;
                 case 2:
                     WIP_Option();

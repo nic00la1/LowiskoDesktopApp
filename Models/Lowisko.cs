@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LowiskoDesktopApp.Models
+﻿namespace LowiskoDesktopApp.Models
 {
     public class Lowisko
     {
-        public string? Nazwa { get; set; }
-        public List<Fish> Wystepujace_Ryby { get; set;}
+        public int Id { get; set; }
+        public string? Nazwa_ryby { get; set; }
+        public string? Akwen { get; set; }
+        public string? Wojewodztwo { get; set; }
     }
 }
