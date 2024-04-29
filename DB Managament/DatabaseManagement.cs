@@ -1,10 +1,6 @@
-﻿using LowiskoDesktopApp.Models;
+﻿using ConsoleTables;
+using LowiskoDesktopApp.Models;
 using MySql.Data.MySqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LowiskoDesktopApp.DB_Managament
 {
@@ -34,6 +30,7 @@ namespace LowiskoDesktopApp.DB_Managament
             while (reader.Read())
             {
                 Fish fish = new Fish();
+                fish.Id = Convert.ToInt32(reader["id"]);
                 fish.Nazwa = reader["nazwa"].ToString();
                 fish.Wystepowanie = reader["wystepowanie"].ToString();
                 fish.Styl_Zycia = reader["styl_zycia"].ToString();
@@ -43,22 +40,32 @@ namespace LowiskoDesktopApp.DB_Managament
 
             conn.Close();
 
+            //  Uzywam paczke z NugetPackage - ,,ConsoleTables"
+            var table = new ConsoleTable("Id", "Nazwa ryby",
+                "Wystepowanie", "Styl Zycia");
+
+            // Wyswietl wszystkie ryby
             foreach (Fish fish in lista_ryb)
             {
-                Console.WriteLine($"Nazwa: {fish.Nazwa}");
-                Console.WriteLine($"Wystepowanie: {fish.Wystepowanie}");
-
-                // Jesli Styl zycia ryby to 1 = drapiezne , 2 = spokojnego zeru
+                string stylZycia;
                 if (fish.Styl_Zycia == "1")
                 {
-                    Console.WriteLine($"Styl zycia: DRAPIEZNE");
+                    stylZycia = "drapieżna";
                 }
                 else if (fish.Styl_Zycia == "2")
                 {
-                    Console.WriteLine($"Styl zycia: SPOKOJNEGO ZERU");
+                    stylZycia = "spokojnego żeru";
                 }
-                Console.WriteLine();
+                else
+                {
+                    stylZycia = "nieznany";
+                }
+
+                table.AddRow(fish.Id, fish.Nazwa, fish.Wystepowanie, stylZycia);
             }
+
+            table.Options.EnableCount = false; // Wylacz numerowanie wierszy
+            table.Write(); // Wyswietla tabele
         }
     }
 }
