@@ -1,6 +1,4 @@
-﻿using LowiskoDesktopApp.UI;
-
-namespace LowiskoDesktopApp
+﻿namespace LowiskoDesktopApp.UI
 {
     public class Menu
     {
@@ -8,7 +6,9 @@ namespace LowiskoDesktopApp
             {
                 "1. Wyswietl wszystkie ryby + info",
                 "2. Wyswietl wszystkie lowiska + ryby jakie tam wystepuja",
-                "3. Dodaj nowego rybaka", "4. Koniec"
+                "3. Dodaj nowego rybaka",
+                "4. Wyswietl wszystkich rybakow",
+                "5. Koniec"
             };
         static int activePosition = 0;
 
@@ -56,7 +56,7 @@ namespace LowiskoDesktopApp
                 ConsoleKeyInfo key = Console.ReadKey();
                 if (key.Key == ConsoleKey.UpArrow)
                 {
-                    activePosition = (activePosition > 0) ? activePosition - 1 : positions.Length - 1;
+                    activePosition = activePosition > 0 ? activePosition - 1 : positions.Length - 1;
                     ShowMenu();
                 }
                 else if (key.Key == ConsoleKey.DownArrow)
@@ -88,9 +88,12 @@ namespace LowiskoDesktopApp
                     utilities.WyswietlLowiska();
                     break;
                 case 2:
-                    WIP_Option();
+                    utilities.DodajRybaka();
                     break;
                 case 3:
+                    WIP_Option();
+                    break;
+                case 4:
                     Environment.Exit(0);
                     break;
             }

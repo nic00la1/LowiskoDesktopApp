@@ -1,4 +1,6 @@
-﻿namespace LowiskoDesktopApp
+﻿using LowiskoDesktopApp.UI;
+
+namespace LowiskoDesktopApp
 {
     class Program
     {

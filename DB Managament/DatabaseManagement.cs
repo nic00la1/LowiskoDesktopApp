@@ -103,5 +103,46 @@ namespace LowiskoDesktopApp.DB_Managament
             table.Options.EnableCount = false;
             table.Write();
         }
+
+        public void DodajRybaka()
+        {
+            string createDb_query = "CREATE TABLE IF NOT EXISTS `cwiczenia_1`.`rybacy` " +
+                "(`Id` INT NOT NULL AUTO_INCREMENT , " +
+                "`Imie` VARCHAR(255) NOT NULL , " +
+                "`Nazwisko` VARCHAR(255) NOT NULL , " +
+                "`Wiek` INT NOT NULL , " +
+                "`Ulubione_Lowisko` VARCHAR(255) NOT NULL , " +
+                "`Data_Rejestracji` DATE NOT NULL , " +
+                "PRIMARY KEY (`Id`)) ENGINE = InnoDB;";
+            MySqlCommand cmd_createDb = new MySqlCommand(createDb_query, conn);
+
+            conn.Open();
+
+            cmd_createDb.ExecuteNonQuery(); // Wykonaj zapytanie
+
+            Console.WriteLine("Podaj imie: ");
+            string imie = Console.ReadLine();
+            Console.WriteLine("Podaj nazwisko: ");
+            string nazwisko = Console.ReadLine();
+            Console.WriteLine("Podaj wiek: ");
+            int wiek = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Ulubione lowisko rybaka: ");
+            string ulubione_lowisko = Console.ReadLine();
+
+            DateOnly data_rejestracji = DateOnly.FromDateTime(DateTime.Today);
+
+            string formattedDate = data_rejestracji.ToString("yyyy-MM-dd"); // Format daty
+
+            string insert_query = "INSERT INTO rybacy (Imie, Nazwisko, Wiek, Ulubione_Lowisko, Data_Rejestracji) " +
+                $"VALUES ('{imie}', '{nazwisko}', {wiek}, '{ulubione_lowisko}', '{formattedDate}')";
+
+            MySqlCommand cmd_insert = new MySqlCommand(insert_query, conn);
+
+            cmd_insert.ExecuteNonQuery();
+
+            Console.WriteLine("\nDodano nowego rybaka!");
+
+            conn.Close();
+        }
     }
 }
