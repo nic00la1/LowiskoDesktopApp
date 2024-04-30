@@ -69,15 +69,22 @@ namespace LowiskoDesktopApp.DB_Managament
             table.Write(); // Wyswietla tabele
         }
 
-        public void WyswietlLowiska()
+        public List<Lowisko> WyswietlLowiska()
         {
             string query = "SELECT lowisko.*, ryby.nazwa AS Nazwa_ryby " +
                 "FROM lowisko " +
                 "JOIN ryby ON lowisko.ryby_id = ryby.id";
             MySqlCommand cmd = new MySqlCommand(query, conn);
 
-            conn.Open();
+            // jesli polaczenie juz jest, to nie trzeba go otwierac
+            if (conn.State == System.Data.ConnectionState.Closed)
+            {
+                conn.Open();
+            }
+
             MySqlDataReader reader = cmd.ExecuteReader();
+
+            List<Lowisko> lista_lowisk = new List<Lowisko>(); // Przechowuje listę łowisk
 
             while (reader.Read())
             {
@@ -102,6 +109,8 @@ namespace LowiskoDesktopApp.DB_Managament
 
             table.Options.EnableCount = false;
             table.Write();
+
+            return lista_lowisk; // Zwraca listę łowisk
         }
 
         public void DodajRybaka()
@@ -126,8 +135,8 @@ namespace LowiskoDesktopApp.DB_Managament
             string nazwisko = Console.ReadLine();
             Console.WriteLine("Podaj wiek: ");
             int wiek = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Ulubione lowisko rybaka: ");
-            string ulubione_lowisko = Console.ReadLine();
+
+            string ulubione_lowisko = WybierzUlubioneLowisko();
 
             DateOnly data_rejestracji = DateOnly.FromDateTime(DateTime.Today);
 
@@ -136,6 +145,8 @@ namespace LowiskoDesktopApp.DB_Managament
             string insert_query = "INSERT INTO rybacy (Imie, Nazwisko, Wiek, Ulubione_Lowisko, Data_Rejestracji) " +
                 $"VALUES ('{imie}', '{nazwisko}', {wiek}, '{ulubione_lowisko}', '{formattedDate}')";
 
+            conn.Open();
+
             MySqlCommand cmd_insert = new MySqlCommand(insert_query, conn);
 
             cmd_insert.ExecuteNonQuery();
@@ -143,6 +154,63 @@ namespace LowiskoDesktopApp.DB_Managament
             Console.WriteLine("\nDodano nowego rybaka!");
 
             conn.Close();
+        }
+
+        private string WybierzUlubioneLowisko()
+        {
+            Console.WriteLine("Wybierz łowisko: ");
+
+            var lowiska = WyswietlLowiska();
+            string wybrane_lowisko = "";
+
+            if (lowiska.Count > 0)
+            {
+                // Wybieranie lowiska spośród listy lowisk (strzałkami góra/dół)
+                int activePosition = 0;
+                Console.ReadKey();
+
+                while (true)
+                {
+                    Console.Clear(); // Clear the console before displaying the lowiska
+                    for (int i = 0; i < lowiska.Count; i++)
+                    {
+                        if (i == activePosition)
+                        {
+                            Console.BackgroundColor = ConsoleColor.DarkCyan;
+                            Console.ForegroundColor = ConsoleColor.Black;
+                            Console.WriteLine("{0, -35}", lowiska[i].Akwen);
+                            Console.BackgroundColor = ConsoleColor.Black;
+                            Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        }
+                        else
+                        {
+                            Console.WriteLine(lowiska[i].Akwen);
+                        }
+                    }
+
+                    ConsoleKeyInfo key = Console.ReadKey();
+                    if (key.Key == ConsoleKey.UpArrow)
+                    {
+                        activePosition = activePosition > 0 ? activePosition - 1 : lowiska.Count - 1;
+                    }
+                    else if (key.Key == ConsoleKey.DownArrow)
+                    {
+                        activePosition = activePosition < lowiska.Count - 1 ? activePosition + 1 : 0;
+                    }
+                    else if (key.Key == ConsoleKey.Enter)
+                    {
+                        wybrane_lowisko = lowiska[activePosition].Akwen;
+                        break;
+                    }
+                }
+                Console.WriteLine($"\nWybrano łowisko: {wybrane_lowisko}");
+            }
+            else
+            {
+                Console.WriteLine("Brak łowisk dostępnych w bazie danych.");
+            }
+
+            return wybrane_lowisko;
         }
     }
 }
