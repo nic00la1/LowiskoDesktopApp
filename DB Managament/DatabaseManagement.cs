@@ -122,7 +122,7 @@ namespace LowiskoDesktopApp.DB_Managament
                 "`Nazwisko` VARCHAR(255) NOT NULL , " +
                 "`Wiek` INT NOT NULL , " +
                 "`Ulubione_Lowisko` VARCHAR(255) NOT NULL , " +
-                "`Data_Rejestracji` DATE NOT NULL , " +
+                "`Data_Rejestracji` DATETIME NOT NULL , " + // Change the column type to DATETIME
                 "PRIMARY KEY (`Id`)) ENGINE = InnoDB;";
             MySqlCommand cmd_createDb = new MySqlCommand(createDb_query, conn);
 
@@ -160,12 +160,12 @@ namespace LowiskoDesktopApp.DB_Managament
 
             string ulubione_lowisko = WybierzUlubioneLowisko();
 
-            DateOnly data_rejestracji = DateOnly.FromDateTime(DateTime.Today);
+            DateTime registration_date = DateTime.Now; // Pobierz aktualna date
 
-            string formattedDate = data_rejestracji.ToString("yyyy-MM-dd"); // Format daty
+            string formatted_date = registration_date.ToString("yyyy-MM-dd HH:mm:ss"); // Formatuj date do formatu yyyy-MM-dd HH:mm:ss
 
             string insert_query = "INSERT INTO rybacy (Imie, Nazwisko, Wiek, Ulubione_Lowisko, Data_Rejestracji) " +
-                $"VALUES ('{imie}', '{nazwisko}', {wiek}, '{ulubione_lowisko}', '{formattedDate}')";
+                $"VALUES ('{imie}', '{nazwisko}', {wiek}, '{ulubione_lowisko}', '{formatted_date}')";
 
             conn.Open();
 
