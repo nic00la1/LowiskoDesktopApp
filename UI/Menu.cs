@@ -91,20 +91,12 @@
                     utilities.DodajRybaka();
                     break;
                 case 3:
-                    WIP_Option();
+                    utilities.WyswietlRybakow();
                     break;
                 case 4:
                     Environment.Exit(0);
                     break;
             }
-        }
-
-        private static void WIP_Option()
-        {
-            Console.Clear();
-            Console.SetCursorPosition(12, 4);
-            Console.Write("Opcja w trakcie realizacji...");
-            Console.ReadKey();
         }
     }
 }

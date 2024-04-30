@@ -36,5 +36,14 @@ namespace LowiskoDesktopApp.UI
             db.DodajRybaka();
             Console.ReadKey(); // Dopoki nie nacisniesz klawisza program nie wyjdzie z metody
         }
+
+        public void WyswietlRybakow()
+        {
+            Console.Clear();
+            DatabaseManagement db = new DatabaseManagement();
+
+            db.WyswietlWszystkichRybakow();
+            Console.ReadKey(); // Dopoki nie nacisniesz klawisza program nie wyjdzie z metody
+        }
     }
 }

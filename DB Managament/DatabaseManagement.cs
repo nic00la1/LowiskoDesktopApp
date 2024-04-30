@@ -8,6 +8,7 @@ namespace LowiskoDesktopApp.DB_Managament
     {
         public List<Fish> lista_ryb = new List<Fish>(); // Lista wszystkich ryb
         public List<Lowisko> lista_lowisk = new List<Lowisko>();
+        public List<Rybak> lista_rybakow = new List<Rybak>();
 
         string connectionString = $"server={Properties.Resources.server};" +
             $"uid={Properties.Resources.uid};" +
@@ -131,10 +132,31 @@ namespace LowiskoDesktopApp.DB_Managament
 
             Console.WriteLine("Podaj imie: ");
             string imie = Console.ReadLine();
+
+            // Jesli imie jest puste, to nie pozwala na dodanie rekordu
+            while (string.IsNullOrEmpty(imie))
+            {
+                Console.WriteLine("Imie nie moze byc puste. Podaj imie: ");
+                imie = Console.ReadLine();
+            }
+
             Console.WriteLine("Podaj nazwisko: ");
             string nazwisko = Console.ReadLine();
+
+            while (string.IsNullOrEmpty(nazwisko))
+            {
+                Console.WriteLine("Nazwisko nie moze byc puste. Podaj nazwisko: ");
+                nazwisko = Console.ReadLine();
+            }
+
             Console.WriteLine("Podaj wiek: ");
             int wiek = Convert.ToInt32(Console.ReadLine());
+
+            while (wiek <= 0)
+            {
+                Console.WriteLine("Wiek nie moze byc mniejszy lub rowny 0. Podaj wiek: ");
+                wiek = Convert.ToInt32(Console.ReadLine());
+            }
 
             string ulubione_lowisko = WybierzUlubioneLowisko();
 
@@ -211,6 +233,45 @@ namespace LowiskoDesktopApp.DB_Managament
             }
 
             return wybrane_lowisko;
+        }
+
+        public void WyswietlWszystkichRybakow()
+        {
+            string query = "SELECT * FROM rybacy";
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            conn.Open();
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+
+            while (reader.Read())
+            {
+                Rybak rybak = new Rybak();
+                rybak.Id = Convert.ToInt32(reader["id"]);
+                rybak.Imie = reader["imie"].ToString();
+                rybak.Nazwisko = reader["nazwisko"].ToString();
+                rybak.Wiek = Convert.ToInt32(reader["wiek"]);
+                rybak.Ulubione_Lowisko = reader["ulubione_lowisko"].ToString();
+                rybak.Data_Rejestracji = Convert.ToDateTime(reader["data_rejestracji"]);
+
+                lista_rybakow.Add(rybak);
+            }
+
+            conn.Close();
+
+            var table = new ConsoleTable("Id", "Imie",
+                               "Nazwisko", "Wiek", "Ulubione Lowisko", "Data Rejestracji");
+
+            foreach (Rybak rybak in lista_rybakow)
+            {
+                table.AddRow(rybak.Id, rybak.Imie, rybak.Nazwisko,
+                    rybak.Wiek, rybak.Ulubione_Lowisko, rybak.Data_Rejestracji);
+            }
+
+            table.Options.EnableCount = false;
+
+            Console.WriteLine("Lista wszystkich rybakow: ");
+            table.Write();
         }
     }
 }
