@@ -273,5 +273,17 @@ namespace LowiskoDesktopApp.DB_Managament
             Console.WriteLine("Lista wszystkich rybakow: ");
             table.Write();
         }
+
+        public bool CzyTabelaIstnieje(string nazwaTabeli)
+        {
+            string query = $"SHOW TABLES LIKE '{nazwaTabeli}'"; // Sprawdza czy tabela istnieje
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+
+            conn.Open();
+            object result = cmd.ExecuteScalar(); // Zwraca pierwsza kolumne pierwszego wiersza
+            conn.Close();
+
+            return result != null; // Jesli wynik jest rozny od null, to tabela istnieje
+        }
     }
 }
